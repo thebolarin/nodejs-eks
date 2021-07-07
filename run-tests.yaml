@@ -1,0 +1,59 @@
+name: run-service-tests
+
+on:
+  pull_request:
+    branches: [ dev ] # Only runs on other branches when there's a PR to dev
+
+jobs:
+  run-service-tests:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ['14.6']
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: secretroot
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      redis:
+        image: redis
+        ports:
+        - 6379:6379
+        options: --entrypoint redis-server
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Create env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_DATABASE_USERNAME: user
+          envkey_DATABASE_PASSWORD: secret
+          envkey_DATABASE_NAME: test_db
+          envkey_DATABASE_PORT: 33306
+          envkey_DATABASE_HOST: 127.0.0.1
+          envkey_NODE_ENV: development
+          envkey_REDIS_HOST: 127.0.0.1
+          envkey_REDIS_PASSWORD: null
+          envkey_REDIS_PORT: 6379
+          envkey_REDIS_CLIENT: predis
+      - name:  Prepare Application For JEST
+        run: |
+          npm ci
+          npm run migrate
+          node -v
+      - name: Execute tests (Unit and Feature tests) via JEST
+        run: |
+          npm run test:ci
