@@ -44,14 +44,14 @@ service:
 ingress:
   enabled: true
   annotations: 
-    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+     nginx.ingress.kubernetes.io/rewrite-target: /$2
     # nginx.ingress.kubernetes.io/enable-cors: "true"
     # nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
     # nginx.ingress.kubernetes.io/cors-allow-headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,X-User-Type
     # # nginx.ingress.kubernetes.io/cors-allow-origin: "https://portal.nss.qodehub.dev,https://appointment-svc-docs.nssghdev.com"
     # nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-     kubernetes.io/ingress.class: nginx
+     #kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: api-dev.thebolarin.com
