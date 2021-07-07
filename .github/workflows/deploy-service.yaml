@@ -75,4 +75,4 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        command: helm install blog-svc --install --wait --set image.tag=${{ steps.vars.outputs.sha_short }} devops/k8s/blog-svc -f devops/k8s/blog-svc/values/dev.values.yaml -n dev
+        command: helm upgrade blog-svc --install --wait --set image.tag=${{ steps.vars.outputs.sha_short }} devops/k8s/blog-svc -f devops/k8s/blog-svc/values/dev.values.yaml -n dev
