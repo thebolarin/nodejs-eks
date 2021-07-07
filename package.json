@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev --poll src/index.ts",
-    "start:prod": "node dist/src/index.js",
+    "start:prod": "node dist/index.js",
     "kafka:consume": "node dist/src/messaging/kafkaConsume.js",
     "test": "jest --watchAll --no-cache",
     "test:ci": "jest --forceExit",
